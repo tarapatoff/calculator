@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
     <script src="index.js" defer></script>
     <title>Calculator App</title>
 </head>
 <body>
-    <div class="header"><h1>Calculator App</h1></div>
-    <div class="container">
+    <div class="header background ">
+        <h1>Calculator App</h1>
+    </div>
+    <div class="container background ">
         <div class="container-content">
             <div class="calc-display"></div>
             <div class="firstrow">
-                <button id="clear" class="operator">C</button>
-                <button id="delete" class="operator">DEL</button>
+                <button id="clear" class="operator">AC</button>
+                <button id="delete">DEL</button>
                 <button id="divide" class="operator">/</button>
             </div>
             <div class="secondrow">
@@ -38,11 +43,11 @@
             <div class="fifthrow">
                 <button id="decimals" class="operator">.</button>
                 <button class="digit zero">0</button>
-                <button class="sum">=</button>
+                <button class="operator sum">=</button>
                 
             </div>
         </div>
     </div>
-    <div class="footer">© ZENJE</div>
+    <div class="footer background">© ZENJE</div>
 </body>
 </html>
