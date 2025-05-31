@@ -75,6 +75,9 @@ button {
     margin-bottom: auto;
     border: 0;
     border-radius: 28px;
+    font-family: "Playwrite HU", cursive;
+    font-optical-sizing: auto;
+    font-weight: 400;
 }
 
 h1 {
@@ -104,8 +107,11 @@ h1 {
     text-align: center;
     border: 0;
     margin-top: 10px;
+    max-width: 200px;
     min-width: 200px;
     min-height: 60px;
+    max-height: 180px;
+    flex-wrap: wrap;
     border-radius: 18px;
 }
 
@@ -123,7 +129,7 @@ h1 {
 .footer { 
     display: flex;
     margin-top: auto;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 700;
     line-height: 2.5;
     color: #FFFFFF;
@@ -136,7 +142,12 @@ h1 {
 .fourthrow, 
 .fifthrow {
     display: flex;
-    gap: 3px;
+    gap: 5px;
+}
+
+.error {
+    color: red;
+    transition: color 0.5s;
 }
 
 
