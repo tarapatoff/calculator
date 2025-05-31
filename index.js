@@ -7,6 +7,7 @@ const display = document.querySelector(".calc-display");
 const digitButtons = document.querySelectorAll(".digit");
 const operatorButtons = document.querySelectorAll(".operator");
 const btn_delete = document.querySelector("#delete");
+const btn_clear = document.querySelector("#clear");
 
 let num1 = null;
 let num2 = null;
@@ -15,21 +16,32 @@ let operator = null;
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
         const op = button.textContent;
+
         if (op === "=") {
-            num2 = parseFloat(display.textContent);
-                if (num1 !== null && operator !== null) {
-                    const result = operate(num1, num2, operator);
-                    display.textContent = result;
-                    num1 = null;
-                    num2 = null;
-                    operator = null;
-                } else {
+            if (num1 !== null && operator !== null && display.textContent !== "") {
+                num2 = parseFloat(display.textContent);
+                const result = operate(num1, num2, operator);
+                display.textContent = result;
+                num1 = null;
+                num2 = null;
+                operator = null;
+            }
+        } else {
+            if (num1 !== null && operator !== null && display.textContent !== "") {
+                num2 = parseFloat(display.textContent);
+                const result = operate(num1, num2, operator);
+                display.textContent = result;
+                num1 = result;
+                operator = op;
+            } else if (display.textContent !== "") {
                 num1 = parseFloat(display.textContent);
                 operator = op;
                 display.textContent = "";
+            } else {
+                
             }
         }
-    })
+    });
 });
 
 digitButtons.forEach(button => {
@@ -38,43 +50,42 @@ digitButtons.forEach(button => {
     })
 });
 
-function operate (a, b, operator) {
-    switch (operator) {
-        case "+": return add(a, b);
-        case "-": return subtract(a, b);
-        case "*": return multiply(a, b);
-        case "/": return divide(a, b);
-        case "=": return sum(a, b);
-        default: return b;
-    }
-    
-};
-
 function deleteDigit () {
-    display.textContent = display.textContent.slice(0, -1);
+    if (display.textContent.length > 0) {
+        display.textContent = display.textContent.slice(0, -1);
+    }
 }
 
 function populateDisplay (value) {
-    display.textContent += value;
+    if (display.textContent.length < 14) {
+        display.textContent += value;
+    } else {
+        display.classList.add("error")
+        setTimeout(() => {
+            display.classList.remove("error");
+        }, 500);
+    }
 };
 
-function add (numbers) {
-    let sum = 0;
-	    for (let number of numbers) {
-            sum += number;
-        }
-    return sum;
-};
+function operate(a, b, operator) {
+    switch (operator) {
+        case "+": return add(a, b);
+        case "-": return subtract(a, b);
+        case "x": return multiply(a, b);
+        case "/": return divide(a, b);
+        default: return b;
+    }
+}
 
-function subtract (...numbers) {
-	let sum = numbers[0];
-	    for (let number of numbers.slice(1)) {
-            sum -= number;
-        }
-    return sum;
-};
+function add(a, b) {
+    return a + b;
+}
 
-function sum (numbers) {
+function subtract(a, b) {
+    return a - b;
+}
+
+function sum (a, b) {
     let total = 0;
         for (let number of numbers) {
             total += number;
@@ -82,20 +93,55 @@ function sum (numbers) {
     return total;
 };
 
-function multiply (numbers) {
-    let product = 1;
-	    for (let number of numbers) {
-            product *= number;
-        }
-    return product;
-};
+function multiply(a, b) {
+    return a * b;
+}
 
- function divide (...numbers) {
-    let product = numbers[0];
-        for (let number of numbers.slice(1)) {
-            product /= number;
-        }
-    return product; 
-};
+function divide(a, b) {
+    return b === 0 ? "Error" : a / b;
+}
+
 
 btn_delete.addEventListener("click", deleteDigit);
+btn_clear.addEventListener("click", () => {
+    display.textContent = "";
+    num1 = null;
+    num2 = null;
+    operator = null;
+});
+
+
+//keyboard support 
+document.addEventListener('keypress', (event) => {
+    if (event.key == "1") {display.textContent += event.key;}
+    if (event.key == "2") {display.textContent += event.key;}
+    if (event.key == "3") {display.textContent += event.key;}
+    if (event.key == "4") {display.textContent += event.key;}
+    if (event.key == "5") {display.textContent += event.key;}
+    if (event.key == "6") {display.textContent += event.key;}
+    if (event.key == "7") {display.textContent += event.key;}
+    if (event.key == "8") {display.textContent += event.key;}
+    if (event.key == "9") {display.textContent += event.key;}
+    if (event.key == "0") {display.textContent += event.key;}
+    if (event.key == "*") {}
+    if (event.key == ".") {}
+    if (event.key == "/") {}
+    if (event.key == "=") {}
+    if (event.key == "+") {}
+    if (event.key == "-") {}
+    
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === "Backspace") {
+        event.preventDefault();
+        deleteDigit();
+    }
+    if (event.key == "Delete") {
+        event.preventDefault();
+        display.textContent = "";
+        num1 = null;
+        num2 = null;
+        operator = null;
+    }
+});
