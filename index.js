@@ -17,7 +17,7 @@ let isResultShown = false;
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
         const op = button.textContent;
-
+        
         if (op === "=") {
             if (num1 !== null && operator !== null && display.textContent !== "") {
                 num2 = parseFloat(display.textContent);
@@ -67,7 +67,7 @@ function deleteDigit () {
 
 function populateDisplay(value) {
     if (isResultShown) {
-        display.textContent = value; // Починаємо з нового числа
+        display.textContent = value; 
         isResultShown = false;
         return;
     }
@@ -112,7 +112,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return b === 0 ? "Error" : a / b;
+    return b === 0 ? alert("You cannot divide by zero!") : a / b;
 }
 
 
