@@ -29,6 +29,7 @@ operatorButtons.forEach(button => {
                 num2 = null;
                 operator = null;
                 isResultShown = true;
+                btn_decimals.disabled = false;
             }
         } else {
             if (isResultShown) {
@@ -36,6 +37,7 @@ operatorButtons.forEach(button => {
                 operator = op;
                 isResultShown = false;
                 display.textContent = "";
+                btn_decimals.disabled = false;
                 return;
             }
             if (num1 !== null && operator !== null && display.textContent !== "") {
@@ -45,11 +47,13 @@ operatorButtons.forEach(button => {
                 num1 = result;
                 operator = op;
                 isResultShown = true;
+                btn_decimals.disabled = false;
             } 
             else if (display.textContent !== "") {
                 num1 = parseFloat(display.textContent);
                 operator = op;
                 isResultShown = true;
+                btn_decimals.disabled = false;
             }
         }
     });
@@ -60,6 +64,8 @@ digitButtons.forEach(button => {
         populateDisplay(button.textContent);
     })
 });
+
+btn_decimals.addEventListener ("click", handleDecimal);
 
 function deleteDigit () {
     if (display.textContent.length > 0) {
@@ -76,6 +82,7 @@ function populateDisplay(value) {
     if (isResultShown) {
         display.textContent = value; 
         isResultShown = false;
+        btn_decimals.disabled = false;
         return;
     }
     if (display.textContent.length < 14) {
@@ -92,7 +99,7 @@ function operate(a, b, operator) {
     switch (operator) {
         case "+": return add(a, b);
         case "-": return subtract(a, b);
-        case "x": return multiply(a, b);
+        case "*": return multiply(a, b);
         case "/": return divide(a, b);
         default: return b;
     }
@@ -122,6 +129,15 @@ function divide(a, b) {
     return b === 0 ? alert("You cannot divide by zero!") : a / b;
 }
 
+function handleDecimal() {
+    const value = "."
+    if (!display.textContent.includes(".") && display.textContent.length > 0) {
+        display.textContent += value;
+    } else if (display.textContent.includes(".")){
+        btn_decimals.disabled = true;
+    }
+}
+
 
 btn_delete.addEventListener("click", deleteDigit);
 btn_clear.addEventListener("click", () => {
@@ -129,28 +145,74 @@ btn_clear.addEventListener("click", () => {
     num1 = null;
     num2 = null;
     operator = null;
+    btn_decimals.disabled = false;
 });
 
 
 //keyboard support 
 document.addEventListener('keypress', (event) => {
-    if (event.key == "1") {display.textContent += event.key;}
-    if (event.key == "2") {display.textContent += event.key;}
-    if (event.key == "3") {display.textContent += event.key;}
-    if (event.key == "4") {display.textContent += event.key;}
-    if (event.key == "5") {display.textContent += event.key;}
-    if (event.key == "6") {display.textContent += event.key;}
-    if (event.key == "7") {display.textContent += event.key;}
-    if (event.key == "8") {display.textContent += event.key;}
-    if (event.key == "9") {display.textContent += event.key;}
-    if (event.key == "0") {display.textContent += event.key;}
-    if (event.key == "*") {}
-    if (event.key == ".") {}
-    if (event.key == "/") {}
-    if (event.key == "=") {}
-    if (event.key == "+") {}
-    if (event.key == "-") {}
-    
+    const allowedKeys = "0123456789";
+    const operatorKeys = ["+", "-", "*", "/", "=", "Enter"];
+    if (allowedKeys.includes(event.key)) {
+        if (display.textContent.length < 14) {
+            if (isResultShown) {
+                display.textContent = event.key;
+                isResultShown = false;
+            } else {
+                display.textContent += event.key;
+            }
+            btn_decimals.disabled = false;
+        } else {
+            display.classList.add("error");
+            setTimeout(() => {
+                display.classList.remove("error");
+            }, 500);
+        }
+    }
+
+    if (operatorKeys.includes(event.key)) {
+        if (event.key === "=" || event.key === "Enter") {
+            if (num1 !== null && operator !== null && display.textContent !== "") {
+                num2 = parseFloat(display.textContent);
+                const result = operate(num1, num2, operator);
+                display.textContent = result;
+                num1 = null;
+                num2 = null;
+                operator = null;
+                isResultShown = true;
+                btn_decimals.disabled = false;
+            }
+        } else {
+            const op = event.key === "*" ? "x" : event.key; // перетворюємо * на "x"
+            if (isResultShown) {
+                num1 = parseFloat(display.textContent);
+                operator = op;
+                isResultShown = false;
+                display.textContent = "";
+                btn_decimals.disabled = false;
+            } else if (num1 !== null && operator !== null && display.textContent !== "") {
+                num2 = parseFloat(display.textContent);
+                const result = operate(num1, num2, operator);
+                display.textContent = result;
+                num1 = result;
+                operator = op;
+                isResultShown = true;
+                btn_decimals.disabled = false;
+            } else if (display.textContent !== "") {
+                num1 = parseFloat(display.textContent);
+                operator = op;
+                isResultShown = true;
+                btn_decimals.disabled = false;
+            }
+        }
+    }
+
+    if (event.key === ".") {
+        if (!display.textContent.includes(".") && display.textContent.length > 0 && display.textContent.length < 14){
+            display.textContent += ".";
+            btn_decimals.disabled = true;
+        }
+    }
 });
 
 document.addEventListener('keydown', (event) => {
