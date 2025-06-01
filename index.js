@@ -3,11 +3,13 @@ const btn_subtract = document.querySelector("#subtract");
 const btn_multiply = document.querySelector("#multiply");
 const btn_divide = document.querySelector("#divide");
 const btn_sum = document.querySelector("#sum");
+const btn_delete = document.querySelector("#delete");
+const btn_clear = document.querySelector("#clear");
+const btn_decimals = document.querySelector("#decimals");
 const display = document.querySelector(".calc-display");
 const digitButtons = document.querySelectorAll(".digit");
 const operatorButtons = document.querySelectorAll(".operator");
-const btn_delete = document.querySelector("#delete");
-const btn_clear = document.querySelector("#clear");
+
 
 let num1 = null;
 let num2 = null;
