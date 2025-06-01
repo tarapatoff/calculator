@@ -17,7 +17,7 @@ let isResultShown = false;
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
         const op = button.textContent;
-        
+
         if (op === "=") {
             if (num1 !== null && operator !== null && display.textContent !== "") {
                 num2 = parseFloat(display.textContent);
@@ -62,6 +62,11 @@ digitButtons.forEach(button => {
 function deleteDigit () {
     if (display.textContent.length > 0) {
         display.textContent = display.textContent.slice(0, -1);
+    } else if (display.textContent.length < 0) {
+        display.textContent = "";
+        num1 = null;
+        num2 = null;
+        operator = null;
     }
 };
 
