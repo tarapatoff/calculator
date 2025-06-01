@@ -12,6 +12,7 @@ const btn_clear = document.querySelector("#clear");
 let num1 = null;
 let num2 = null;
 let operator = null;
+let isResultShown = false;
 
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
@@ -25,20 +26,28 @@ operatorButtons.forEach(button => {
                 num1 = null;
                 num2 = null;
                 operator = null;
+                isResultShown = true;
             }
         } else {
+            if (isResultShown) {
+                num1 = parseFloat(display.textContent);
+                operator = op;
+                isResultShown = false;
+                display.textContent = "";
+                return;
+            }
             if (num1 !== null && operator !== null && display.textContent !== "") {
                 num2 = parseFloat(display.textContent);
                 const result = operate(num1, num2, operator);
                 display.textContent = result;
                 num1 = result;
                 operator = op;
-            } else if (display.textContent !== "") {
+                isResultShown = true;
+            } 
+            else if (display.textContent !== "") {
                 num1 = parseFloat(display.textContent);
                 operator = op;
-                display.textContent = "";
-            } else {
-                
+                isResultShown = true;
             }
         }
     });
@@ -54,13 +63,18 @@ function deleteDigit () {
     if (display.textContent.length > 0) {
         display.textContent = display.textContent.slice(0, -1);
     }
-}
+};
 
-function populateDisplay (value) {
+function populateDisplay(value) {
+    if (isResultShown) {
+        display.textContent = value; // Починаємо з нового числа
+        isResultShown = false;
+        return;
+    }
     if (display.textContent.length < 14) {
         display.textContent += value;
     } else {
-        display.classList.add("error")
+        display.classList.add("error");
         setTimeout(() => {
             display.classList.remove("error");
         }, 500);
